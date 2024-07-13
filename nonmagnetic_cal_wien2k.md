@@ -1,4 +1,4 @@
-####  Calculation in Wien2k (Non-magnetic)########
+####  Calculation in Wien2k (Non-magnetic) #######
 
 ! $ symbol means run the command in terminal
 
@@ -27,7 +27,7 @@ $ save_lapw -d pbe
 $ clean_lapw
 
 
-#### band structure calculation ###### 
+#### band structure calculation #### 
 
 ! get test.klist_band using xcryden
 
@@ -51,7 +51,7 @@ $ xmgrace test.bands.agr
 
 $ save_lapw -band -d pbeband
 
-#### TDOS and PDOS calculation ###### 
+#### TDOS and PDOS calculation #### 
 
 $ vi test.in1 ! set larger value of Emax 3.0 (opional sometime)
 
@@ -72,7 +72,7 @@ $ save_lapw -dos -d pbedos
 ! Note that it is better to calculate DOS before band structure. If DOS is done first then we dont need steps 1 and 2 but if done after band calculation then steps 1 and 2 are crucial.
 
 
-##### Optic calculation for semiconductor ########
+#### Optic calculation for semiconductor ####
 
 $ vi test.in1 ! Set larger Emax around 5 to 7 but not compulsory. Use default value if you don't have idea.
 
@@ -86,10 +86,11 @@ $ x optic -p ! it will generate test.inop
 
 $ vi test.inop ! edit it with proper number of k-points, axis symmetry, which looks like
 
-###########################
-800 1 number of k-points, first k-point
+###### test.inop ######
 
--5.0 5.0 energy window for matrix elements(Emin,Emax)
+800 1 number of k-points, first k-point  ! check k-points convergence
+
+-5.0 5.0 energy window for matrix elements (Emin,Emax)
 
 3 number of cases ! according to choices here 3 for orthorhombic
 
@@ -101,13 +102,23 @@ $ vi test.inop ! edit it with proper number of k-points, axis symmetry, which lo
 
 OFF ON/OFF writes MME to unit 4
 
-###################################3
+################ end of file ###################
 
 $ x optic -p
 
 $ x joint -p ! it will generate test.injoint 
 
-$ vi test.injoint !  set lower and uper band index (1 18), Emin, dE, Emax[Ry] (0.000, 0.001,1.00), proper swithc for semiconductor 4 and for metal fist 6, then calculate plasma frequency and then switch to 4.
+$ vi test.injoint ! it looks like
+
+###### test.injoint ######################
+
+1 18 set lower and uper band index
+
+0.000, 0.001,1.00 Emin, dE, Emax[Ry] 
+
+4 switch  ! proper switch for semiconductor is 4 and for metal fist switch to 6, calculate plasma frequency and then switch back to 4.
+
+##########################################################################
 
 $ x joint -p
 
@@ -115,9 +126,9 @@ $ x kram
 
 $ vi test.inkram ! set proper field. 
 
-i.e. 
+###### test.inkram #####################
 
-## For semiconductor ### 
+## For semiconductor ## 
 
 ! 0.05 boardening gamma
 
@@ -127,7 +138,7 @@ i.e.
 
 ################################
 
-## For metal ###
+## For metal ##
 
 ! 0.1 boardening gamma
 
@@ -149,7 +160,7 @@ $ save_lapw -optic -d pbe
 
 $ clean_lapw
 
-#### Thermoelectric calculation ######
+#### Thermoelectric calculation ####
 
 ! Perform regualr scf calculation
  
@@ -175,10 +186,10 @@ $ boltz_plotpl2
 
 $ save_boltz2 -a pbete
 
-##############  This file is prepared by Pawan Joshi,M.Sc. Physics   ###################################
+######  This file is prepared by Pawan Joshi,M.Sc. Physics   #############
 
-##############  Central Department of Physics, Tribhuwan University (2077-2081)   ######################
+######  Central Department of Physics, Tribhuwan University (2077-2081)   ################
 
-##############  copywrite to Pawan Joshi, Email: pjoshi2357@gmail.com   ################################
+######  copywrite to Pawan Joshi, Email: pjoshi2357@gmail.com   #############################
 
-#############   Github: https://github.com/pawan054                     ################################
+######   Github: https://github.com/pawan054                     ################################
