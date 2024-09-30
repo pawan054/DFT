@@ -3,63 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electronic Properties Caculation in WIEN2K</title>
+    <title>Electronic Properties in WIEN2K</title>
     <link rel="stylesheet" href="styles.css">  <!-- Link to external CSS file -->
 </head>
 <body>
     <header>
-        <h1>Electronic Propeerties in WIEN2K</h1>
+        <h1>Electronic Properties in WIEN2K</h1>
     </header>
 
     <nav>
         <ul>
-            <li><a href="non-magnetic">Non-magnetic Calculation</a></li>
-            <li><a href="magnetic">Magnetic Calculation</a></li>
-            <li><a href="soc">Inclusion of SOC</a></li>
+            <li><a href="#non-magnetic">Non-magnetic Calculation</a></li>
+            <li><a href="#magnetic">Magnetic Calculation</a></li>
+            <li><a href="#soc">Inclusion of SOC</a></li>
         </ul>
     </nav>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
 
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+    </style>
     <section id="non-magnetic">
         <h2>#1. Non-Magnetic Calculation</h2>
-        <p>####  Calculation in Wien2k (Non-magnetic)########<p>
-        <p>! $ symbol means run the command interminal<p>
-        <p>! Note just remove flag -p for serial mode<p>
-        <p>! replace the name test by according to directory name<p>
+        <p>In this section, we will learn how to calculate non-magnetic electronic properties in Wien2<p>
+        <p>Step 1: Creating structure/input file i.e .struct</p>
+        <p>Lets make a directory test<p>
+        <p>If you have or want to have different directory than me, then just replace test by name of your directory. Note symbol '$' means it is command. So run it on terminal<p>
+        <p> Let's begin!</p>
         <p>$ makdir test<p>
         <p>$ cd test<p>
-        <p>$ makestruct_lapw<p>
+        <p>$ makestruct_lapw ! while creating struct file I am taking TiN<p>
+        <p>Title: test</p>
+        <p>Spacegroup or lattice:L test</p>
+        <p>Lattice Type: F</p>
+        <p>Unit: A</p>
+        <p>Lattice length: 4.235</p>
+        <p>NEq atoms: 2</p>
+        <p>1st:Ni 0.0 0.0 0.0</p>
+        <p>2nd: N 0.5 0.5 0.5</p>
+        <p>RMT reduction:2 and then return: n</p>
         <p>$ cp init.struct test.struct<p>
+        <p>If you have cif, you can do this also using $cif2struct test.cif</p>
+        <p>Step 2: Initialization of Caclulation. Important flag:rkmax, numk</p>
+        <p>Run the command</p>
         <p>$ init_lapw -b -numk 5000 -vxc 13 -rkmax 6.0 -ecut -7.0<p>
         <p>! or for new version of wien2k<p>
         <p>$ init_lapw -b -hdlo -vxc 13 -ecut -7.0 -numk 1600 -rkmax 6.5 -lvns 6 -gmax 16.0 -fftfac 2.0<p>
-        <p>$ run_lapw -p -ec 0.00001 -cc 0.0001 -NI<p>
+        <p>Step 3: Run the job/calculation</p>
+        <p>$ run_lapw -ec 0.0001 -cc 0.001 -NI<p>
         <p>$ save_lapw -d pbe<p>
         <p>$ clean_lapw</p>
 
-        <p>#### band structure calculation ###### </p>
+        <p>#### Band structure ###### </p>
         <p>! get test.klist_band using xcryden</p>
-        <p>$ x lapw1 -band -p</p>
-        </p>$ x lapw2 -band -qtl -p</p>
-        </p>$ grepline :FER *.scf 1 </p>
-        </p>$ x spaghetti -p  # it will create soc.insp file</p>
-        </p>! insert fermienergy </p>
+        <p>$ x lapw1 -band </p>
+        </p>$ x lapw2 -band -qtl</p>
+        </p>$ grepline :FER 'test.scf' 1 </p>
+        </p>$ x spaghetti  # it will create soc.insp file</p>
+        </p>! insert fermienergy  for this:</p>
         </p>$ vi test.insp</p>
-        </p>$ x spaghetti -p</p>
+        <p>! look for x.xxxxxxxxxxxx and replace it by actual Fermi energy pressing key 'i'</p>
+        <p>press key 'Esc', then shift+; and type wq to save and close vi editor</p>
+        </p>$ x spaghetti</p>
         </p>! plot the band structure with plotting tool</p>
         </p>$ xmgrace test.bands.agr</p>
         </p>$ save_lapw -band -d pbeband</p>
 
         </p>#### TDOS and PDOS calculation ###### </p>
         </p>$ vi test.in1 ! set larger value of Emax 3.0 (opional sometime)</p>
-        </p>$ x kgen -p  ! Set denser k-mesh </p>
-       </p>$ x lapw1 -p ! steps 1-3 are not required for direct dos calculation after scf run and start from 4   but remember if you are calculating after band calculation do steps 1-3.</p>
-       </p>$ x lapw2 -qtl -p</p>
+        </p>$ x kgen  ! Set denser k-mesh </p>
+       </p>$ x lapw1  ! steps 1-3 are not required for direct dos calculation after scf run and start from 4   but remember if you are calculating after band calculation do steps 1-3.</p>
+       </p>$ x lapw2 -qtl </p>
        </p>$ configure_int_lapw ! select different orbitals</p>
-       </p>$ x tetra -p</p>
-       </p>$ dosplot_lapw</p>
+       </p>$ x tetra </p>
+       </p>$ dosplot2_lapw</p>
        </p>$ save_lapw -dos -d pbedos</p>
 
-      </p>! Note that it is better to calculate DOS before band structure. If DOS is done first then we dont need steps 1 and 2 but if done after band calculation then steps 1 and 2 are crucial.</p>
+      </p>! Note that it is better to calculate DOS before band structure. If DOS is done first then we dont need steps 1 and 2 but if did it after band calculation then steps 1 and 2 are mandatory.</p>
     </section>
 
     <section id="magnetic">
