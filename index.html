@@ -8,24 +8,38 @@
 </head>
 <body>
     <header>
-        <h1>PAWAN JOSHI</h1>
+        <h1>Electronic Propeerties in WIEN2K</h1>
     </header>
 
     <nav>
         <ul>
-            <li><a href="#">Contents</a></li>
-            <li><a href="#">DFT_NM_Calculation</a></li>
-            <li><a href="#">DFT code: WIEN2K</a></li>
+            <li><a href="#">Non-magnetic Calculation</a></li>
+            <li><a href="#">Magnetic Calculation</a></li>
+            <li><a href="#">Inclusion of SOC</a></li>
         </ul>
     </nav>
 
     <section>
-        <h2>PAWAN JOSHI</h2>
-        <p>Physics student, Central Department of Physics, TU. Email:pjoshi2357@gamil.com</p>
+        <h2>#1. Non-Magnetic Calculation</h2>
+        <p>####  Calculation in Wien2k (Non-magnetic)########
+! $ symbol means run the command interminal
+! Note just remove flag -p for serial mode
+! replace the name test by according to directory name
+$ makdir test
+$ cd test
+$ makestruct_lapw
+$ cp init.struct test.struct
+$ init_lapw -b -numk 5000 -vxc 13 -rkmax 6.0 -ecut -7.0
+! or for new version of wien2k
+$ init_lapw -b -hdlo -vxc 13 -ecut -7.0 -numk 1600 -rkmax 6.5 -lvns 6 -gmax 16.0 -fftfac 2.0
+$ run_lapw -p -ec 0.00001 -cc 0.0001 -NI
+$ save_lapw -d pbe
+$ clean_lapw</p>
     </section>
 
     <footer>
-        <p>© 2024 pawan joshi</p>
+        <p>©PAWAN JOSHI</p>
+        <p> Physics student, Central Department of Physics, TU. Email:pjoshi2357@gamil.com </p>
     </footer>
 </body>
 </html>
