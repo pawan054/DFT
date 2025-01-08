@@ -1,15 +1,27 @@
 ####  Calculation in Wien2k (Magnetic-Ferromagnetic)########
+
 ! Note just remove flag -p for serial mode
+
 ! replace the name 'test' according to directory name
+
 ! $ symbol means run the command interminal
+
 ! Here I am doing for NiO
+
 $ makdir NiO
+
 $ cd NiO
+
 $ makestruct_lapw !(L,F,A,4.186,2, Ni=0,0,0 and O=0.5,0,0)
+
 $ cp init.struct NiO.struct
+
 $ init_lapw -b -numk 5000 -vxc 13 -rkmax 6.0 -ecut -7.0 -sp
+
 $ runsp_lapw -p -ec 0.00001 -cc 0.0001 -NI
+
 $ save_lapw -d pbe_fm
+
 $ clean_lapw
 
 #### band structure calculation ###### 
